@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/hao.a.chen/Desktop/hardhat-tutorial/contracts/Token.sol": {
-      "lastModificationDate": 1647611731836,
-      "contentHash": "5c9706aa2157ca8c88699657e46025fa",
+      "lastModificationDate": 1647949707735,
+      "contentHash": "32cc9288c61e954736a65fb0f7b8ecd1",
       "sourceName": "contracts/Token.sol",
       "solcConfig": {
         "version": "0.8.9",
@@ -29,6 +29,7 @@
         }
       },
       "imports": [
+        "hardhat/console.sol",
         "@openzeppelin/contracts/token/ERC20/ERC20.sol",
         "@openzeppelin/contracts/access/Ownable.sol"
       ],

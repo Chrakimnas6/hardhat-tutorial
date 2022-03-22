@@ -2,14 +2,12 @@
 // It will be used by the Solidity compiler to validate its version.
 pragma solidity ^0.8.9;
 
-//import "hardhat/console.sol";
+import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 // This is the main building block for smart contracts.
 contract MyToken is ERC20, Ownable {
-    // Some string type variables to identify the token.
-    // The `public` modifier makes a variable readable from outside the contract.
 
     /**
      * Contract initialization.

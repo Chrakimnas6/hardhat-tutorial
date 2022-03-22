@@ -39,6 +39,9 @@ describe("Token contract", function () {
     // for it to be deployed(), which happens once its transaction has been
     // mined.
     hardhatToken = await Token.deploy();
+
+    // Since there is no premint for MyToken, we mint 10000 tokens to the "owner".
+    hardhatToken.mint(owner.address, 10000);
   });
 
   // You can nest describe calls to create subsections.
@@ -65,30 +68,28 @@ describe("Token contract", function () {
   describe("Transactions", function () {
     it("Should transfer tokens between accounts", async function () {
       // Transfer 50 tokens from owner to addr1
-      // expect(
-      //   await hardhatToken.transfer(addr1.address, 50)
-      // ).to.be.reverted(Error, "ERC20: transfer amount exceeds balance")
-      await expect(
-        hardhatToken.transfer(addr1.address, 50)
-      ).to.be.reverted;
-      // const addr1Balance = await hardhatToken.balanceOf(addr1.address);
-      // expect(addr1Balance).to.equal(50);
+      await hardhatToken.transfer(addr1.address, 50);
+      const addr1Balance = await hardhatToken.balanceOf(addr1.address);
+      expect(addr1Balance).to.equal(50);
+      // await expect(
+      //   hardhatToken.transfer(addr1.address, 50)
+      // ).to.be.revertedWith("ERC20: transfer amount exceeds balance");
 
       // Transfer 50 tokens from addr1 to addr2
       // We use .connect(signer) to send a transaction from another account
-      // await hardhatToken.connect(addr1).transfer(addr2.address, 50);
-      // const addr2Balance = await hardhatToken.balanceOf(addr2.address);
-      // expect(addr2Balance).to.equal(50);
+      await hardhatToken.connect(addr1).transfer(addr2.address, 50);
+      const addr2Balance = await hardhatToken.balanceOf(addr2.address);
+      expect(addr2Balance).to.equal(50);
     });
 
     it("Should fail if sender doesn’t have enough tokens", async function () {
       const initialOwnerBalance = await hardhatToken.balanceOf(owner.address);
 
-      // Try to send 1 token from addr1 (0 tokens) to owner (1000000 tokens).
+      // Try to send 1 token from addr1 (0 tokens) to owner (100000 tokens).
       // `require` will evaluate false and revert the transaction.
       await expect(
         hardhatToken.connect(addr1).transfer(owner.address, 1)
-      ).to.be.revertedWith("Not enough tokens");
+      ).to.be.revertedWith("ERC20: transfer amount exceeds balance");
 
       // Owner balance shouldn't have changed.
       expect(await hardhatToken.balanceOf(owner.address)).to.equal(
